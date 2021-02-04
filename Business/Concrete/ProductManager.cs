@@ -11,32 +11,23 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        IBrandDal _brandDal;
-        IColorDal _colorDal;
-
-        public ProductManager(IProductDal productDal, IBrandDal brandDal, IColorDal colorDal)
+        public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
-            _brandDal = brandDal;
-            _colorDal = colorDal;
         }
-        public void Add(Product product)
+        public void Add(Product car)
         {
-            int yaz;
-            _productDal.Add(product);
-            yaz = product.ProductId;
-            Console.WriteLine(yaz + " "+"Numaralı ürün eklendi");
+            if (!(car.Description.Length < 2 && car.DailyPrice <= 0))
+            {
+                _productDal.Add(car);
+            }
+            else
+                Console.WriteLine("Açıklama ve günlük fiyat girişini kontrol ediniz.");
         }
 
-        public void Delete(int id)
+        public void Delete(Product car)
         {
-            _productDal.Delete(id);
-            //_productDal.Delete(id);
-            //Console.WriteLine(id+" "+ "numaralı araç silindi");
-            //int sil;
-            //_productDal.Delete(product);
-            //sil = product.ProductId;
-            //Console.WriteLine(sil +" "+ "Numaralı ürün silindi");
+            _productDal.Delete(car);
         }
 
         public List<Product> GetAll()
@@ -44,15 +35,24 @@ namespace Business.Concrete
             return _productDal.GetAll();
         }
 
-        public List<Product> GetByID()
+        public List<Product> GetProductByBrandId(int brandId)
         {
-            return _productDal.GetAll();
+            return _productDal.GetAll(p => p.BrandId == brandId);
         }
 
-        public void Update(Product product)
+        public List<Product> GetProductByColorId(int colorId)
         {
-            _productDal.Update(product);
-            Console.WriteLine("ürün güncellendi");
+            return _productDal.GetAll(p => p.ColorId == colorId);
+        }
+
+        public Product GetProductById(int id)
+        {
+            return _productDal.Get(p => p.Id == id);
+        }
+
+        public void Update(Product car)
+        {
+            _productDal.Update(car);
         }
     }
 }

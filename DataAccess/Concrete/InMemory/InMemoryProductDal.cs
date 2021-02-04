@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.InMemory
@@ -14,20 +15,10 @@ namespace DataAccess.Concrete.InMemory
         {
             _products = new List<Product>
             {
-                new Product {ProductId=1, ColorId=1, BrandId=1, ModelYear=2021, DailyPrice = "3580000", Description="E-Serisi - 4 Matic+" },
-                new Product {ProductId=2, ColorId=1, BrandId=2, ModelYear=2020, DailyPrice = "555000", Description="SUV" },
-                new Product {ProductId=3, ColorId=2, BrandId=3, ModelYear=2019, DailyPrice = "493400", Description="E-Serisi - 4 Matic+" }
+                new Product {Id=1, ColorId=1, BrandId=1, ModelYear=2021, DailyPrice = 15000, Description="E-Serisi - 4 Matic+" },
+                new Product {Id=2, ColorId=1, BrandId=2, ModelYear=2020, DailyPrice = 7000, Description="SUV" },
+                new Product {Id=3, ColorId=2, BrandId=3, ModelYear=2019, DailyPrice = 3000, Description="E-Serisi - 4 Matic+" }
             };
-        }
-        public void Add(Product product)
-        {
-            _products.Add(product); 
-        }
-
-        public void Delete(int id)
-        {
-            //Product productToDelete = _products.SingleOrDefault(p => p.ProductId == id);
-            //_products.Remove(productToDelete);
         }
 
         public List<Product> GetAll()
@@ -35,19 +26,40 @@ namespace DataAccess.Concrete.InMemory
             return _products;
         }
 
-        public List<Product> GetByID(int id)
+        public Product GetById(int id)
         {
-            return _products.Where(p => p.ProductId == id).ToList();
+            return _products.SingleOrDefault(p => p.Id == id);
         }
 
-        public void Update(Product product)
+        public void Add(Product entity)
         {
-            Product productToUpdate = _products.SingleOrDefault(p => p.ProductId == product.ProductId);
-            productToUpdate.BrandId = product.BrandId;
-            productToUpdate.ColorId = product.ColorId;
-            productToUpdate.DailyPrice = product.DailyPrice;
-            productToUpdate.Description = product.Description;
-            productToUpdate.ModelYear = product.ModelYear;
+            _products.Add(entity);
+        }
+
+        public void Delete(Product entity)
+        {
+            Product deleteProduct = _products.SingleOrDefault(p => p.Id == entity.Id);
+            _products.Remove(deleteProduct);
+        }
+
+        public Product Get(Expression<Func<Product, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Product entity)
+        {
+            Product updateProduct = _products.SingleOrDefault(p => p.Id == entity.Id);
+            updateProduct.BrandId = entity.BrandId;
+            updateProduct.ColorId = entity.ColorId;
+            updateProduct.DailyPrice = entity.DailyPrice;
+            updateProduct.Description = entity.Description;
+            updateProduct.ModelYear = entity.ModelYear;
         }
     }
 }

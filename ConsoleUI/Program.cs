@@ -1,5 +1,7 @@
-﻿using Business.Concrete;
+﻿using Business.Abstract;
+using Business.Concrete;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFrameWork;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
@@ -13,25 +15,28 @@ namespace ConsoleUI
        
         static void Main(string[] args)
         {
-            ProductManager productManager = new ProductManager(new InMemoryProductDal(),new InMemoryBrandDal(),new InMemoryColorDal());
-            BrandManager brandManager = new BrandManager(new InMemoryBrandDal());
-            ColorManager colorManager = new ColorManager(new InMemoryColorDal());
-
-            Product product1 = new Product { BrandId = 1, ColorId = 1, ProductId = 1, DailyPrice = "50000", Description = "Subaru" };
-            Product product2 = new Product { BrandId = 2, ColorId = 1, ProductId = 3, DailyPrice = "5556000", Description = "Mercedes" };
-            Product product3 = new Product { ProductId = 2, ColorId = 1, BrandId = 1,  DailyPrice = "3580000", Description = "E-Serisi - 4 Matic+" };
-
-            productManager.Add(product1);
-            Console.WriteLine("---Eklendi-----");
-            productManager.Update(product2);
-            Console.WriteLine("---Güncellendi-----");
-            
-            productManager.Delete(1);
-            foreach (var product in productManager.GetAll())
+            //ProductManager productManager = new ProductManager(new EfProductDal());
+            IProductService productService = new ProductManager(new EfProductDal());
+            productService.Add(new Product { Id=3,BrandId = 1, ColorId=3, DailyPrice = 500,ModelYear =2020, Description="ASD" });
+            productService.Add(new Product
             {
-                Console.WriteLine(product.Description);
+                Id=4,
+                BrandId = 2,
+                ColorId = 2,
+                DailyPrice = 0,
+                ModelYear = 1992,
+                Description = "a"
+            });
+            foreach (var car in productService.GetProductByBrandId(1))
+            {
+
+                Console.WriteLine("Arabanın Açıklaması: {0} Model Yılı: {1} Günlük Ücreti: {2}", car.Description, car.ModelYear, car.DailyPrice);
+               // Console.WriteLine($"{car.Id}. Marka: {car.BrandId}     Fiyat: {car.DailyPrice}     Açıklama: {car.Description}");
+
             }
-            Console.WriteLine("----Listelendi----");
+
+            Console.ReadLine();
+
 
 
         }
