@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +10,9 @@ namespace Business.Abstract
     {
         List<Product> GetAll();
         Product GetProductById(int id);
-        List<Product> GetProductByBrandId(int brandId);
-        List<Product> GetProductByColorId(int colorId);
+        List<ProductDetailDto> GetProductByBrandId(int brandId);
+        List<ProductDetailDto> GetProductByColorId(int colorId);
+        List<ProductDetailDto> GetProductDetailDto();
         void Add(Product car);
         void Update(Product car);
         void Delete(Product car);

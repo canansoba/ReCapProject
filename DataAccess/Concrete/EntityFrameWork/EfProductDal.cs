@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,53 +11,31 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFrameWork
 {
-    public class EfProductDal : IProductDal
+    public class EfProductDal : EfEntityRepositoryBase<Product, MyDbContext>, IProductDal
+
     {
-        public void Add(Product entity)
+        public List<ProductDetailDto> GetCarDetailDtos(Expression<Func<Product, bool>> filter = null)
         {
             using (MyDbContext context = new MyDbContext())
             {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
+                var result = from prod in filter is null ? context.Product : context.Product.Where(filter)
+                             join joinBrand in context.Brand
+                             on prod.BrandId equals joinBrand.Id
+                             join joinColor in context.Color
+                             on prod.ColorId equals joinColor.Id
+                             select new ProductDetailDto
+                             {
+                                 Id = prod.Id,
+                                 BrandId = joinBrand.Id,
+                                 ColorId = joinColor.Id,
+                                 BrandName = joinBrand.BrandName,
+                                 ColorName = joinColor.ColorName,
+                                 DailyPrice = prod.DailyPrice,
+                                 Description = prod.Description,
+                                 ModelYear = prod.ModelYear
+                             };
 
-        public void Delete(Product entity)
-        {
-            using (MyDbContext context = new MyDbContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
-
-        public Product Get(Expression<Func<Product, bool>> filter)
-        {
-            using (MyDbContext context = new MyDbContext())
-            {
-                return context.Set<Product>().SingleOrDefault(filter);
-            }
-        }
-
-        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
-        {
-            using (MyDbContext context = new MyDbContext())
-            {
-                return filter == null
-                    ? context.Set<Product>().ToList()
-                    : context.Set<Product>().Where(filter).ToList();
-            }
-        }
-
-        public void Update(Product entity)
-        {
-            using (MyDbContext context = new MyDbContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
+                return result.ToList();
             }
         }
     }

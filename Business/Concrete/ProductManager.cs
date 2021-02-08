@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DataAccess.Concrete.InMemory;
+using Entities.DTO;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -35,14 +37,14 @@ namespace Business.Concrete
             return _productDal.GetAll();
         }
 
-        public List<Product> GetProductByBrandId(int brandId)
+        public List<ProductDetailDto> GetProductByBrandId(int brandId)
         {
-            return _productDal.GetAll(p => p.BrandId == brandId);
+            return _productDal.GetCarDetailDtos(p => p.BrandId == brandId);
         }
 
-        public List<Product> GetProductByColorId(int colorId)
+        public List<ProductDetailDto> GetProductByColorId(int colorId)
         {
-            return _productDal.GetAll(p => p.ColorId == colorId);
+            return _productDal.GetCarDetailDtos(p => p.ColorId == colorId);
         }
 
         public Product GetProductById(int id)
@@ -50,9 +52,29 @@ namespace Business.Concrete
             return _productDal.Get(p => p.Id == id);
         }
 
+        public List<ProductDetailDto> GetProductDetailDto()
+        {
+            return _productDal.GetCarDetailDtos();
+        }
+
         public void Update(Product car)
         {
-            _productDal.Update(car);
+            if (!(car.Description.Length < 2 && car.DailyPrice <= 0))
+            {
+                _productDal.Update(car);
+            }
+            else
+                Console.WriteLine("Açıklama ve günlük fiyat girişini kontrol ediniz.");
         }
+
+        //List<ProductDetailDto> IProductService.GetProductByBrandId(int brandId)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //List<ProductDetailDto> IProductService.GetProductByColorId(int colorId)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
