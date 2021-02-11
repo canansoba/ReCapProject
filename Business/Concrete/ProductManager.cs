@@ -7,6 +7,8 @@ using System.Text;
 using DataAccess.Concrete.InMemory;
 using Entities.DTO;
 using System.Linq.Expressions;
+using Core.Utilities.Results;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -17,54 +19,62 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-        public void Add(Product car)
+        public IResult Add(Product car)
         {
             if (!(car.Description.Length < 2 && car.DailyPrice <= 0))
             {
-                _productDal.Add(car);
+                return new ErrorResult(Messages.ProductNameInvalid);
+               
             }
             else
-                Console.WriteLine("Açıklama ve günlük fiyat girişini kontrol ediniz.");
+                _productDal.Add(car);
+
+            return new SuccessResult(Messages.ProductAddes);
         }
 
-        public void Delete(Product car)
+        public IResult Delete(Product car)
         {
             _productDal.Delete(car);
+            return new ErrorResult(Messages.ProductDeleted);
         }
 
-        public List<Product> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
-            return _productDal.GetAll();
+            
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
-        public List<ProductDetailDto> GetProductByBrandId(int brandId)
+        public IDataResult<List<ProductDetailDto>> GetProductByBrandId(int brandId)
         {
-            return _productDal.GetCarDetailDtos(p => p.BrandId == brandId);
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetCarDetailDtos(p => p.BrandId == brandId));
         }
 
-        public List<ProductDetailDto> GetProductByColorId(int colorId)
+        public IDataResult<List<ProductDetailDto>> GetProductByColorId(int colorId)
         {
-            return _productDal.GetCarDetailDtos(p => p.ColorId == colorId);
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetCarDetailDtos(p => p.ColorId == colorId));
         }
 
-        public Product GetProductById(int id)
+        public IDataResult<Product> GetProductById(int id)
         {
-            return _productDal.Get(p => p.Id == id);
+            return new SuccessDataResult<Product>(_productDal.Get(p => p.Id == id));
         }
 
-        public List<ProductDetailDto> GetProductDetailDto()
+        public IDataResult<List<ProductDetailDto>> GetProductDetailDto()
         {
-            return _productDal.GetCarDetailDtos();
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetCarDetailDtos());
         }
 
-        public void Update(Product car)
+        public IResult Update(Product car)
         {
             if (!(car.Description.Length < 2 && car.DailyPrice <= 0))
             {
-                _productDal.Update(car);
+                
+                return new ErrorResult(Messages.ProductControl);
             }
             else
-                Console.WriteLine("Açıklama ve günlük fiyat girişini kontrol ediniz.");
+                _productDal.Update(car);
+            return new SuccessResult(Messages.ProductUpdates);
+
         }
 
         //List<ProductDetailDto> IProductService.GetProductByBrandId(int brandId)

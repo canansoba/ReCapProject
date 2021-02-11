@@ -26,7 +26,7 @@ namespace ConsoleUI
 
         private static void GetAll()
         {
-            foreach (Product product in _productService.GetAll())
+            foreach (Product product in _productService.GetAll().Data)
             {
                 Console.WriteLine($"Id {product.Id}, Description : {product.Description}");
             }
@@ -34,7 +34,7 @@ namespace ConsoleUI
 
         private static void GetColorId()
         {
-            List<ProductDetailDto> product = _productService.GetProductByColorId(1);
+            List<ProductDetailDto> product = _productService.GetProductByColorId(1).Data;
             foreach (var prod in product)
             {
                 Console.WriteLine($"Car Id: {prod.Id}, Car Description: {prod.Description}, Brand Id : {prod.BrandId}");
@@ -43,7 +43,7 @@ namespace ConsoleUI
 
         private static void GetBrandId()
         {
-            List<ProductDetailDto> product = _productService.GetProductByBrandId(3);
+            List<ProductDetailDto> product = _productService.GetProductByBrandId(3).Data;
             foreach (var prod in product)
             {
                 Console.WriteLine($"Car Id: {prod.Id}, Car Description: {prod.Description}, Brand Id : {prod.BrandId}");
