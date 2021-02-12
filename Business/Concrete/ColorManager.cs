@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -25,9 +26,11 @@ namespace Business.Concrete
         //    return _colorDal.Get(c => c.Id == colorId);
         //}
 
-        public List<Color> GetColors()
+        public IDataResult<List<Color>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
+
+        
     }
 }

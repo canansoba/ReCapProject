@@ -21,7 +21,7 @@ namespace Business.Concrete
         }
         public IResult Add(Product car)
         {
-            if (!(car.Description.Length < 2 && car.DailyPrice <= 0))
+            if (car.Description.Length < 2 && car.DailyPrice <= 0)
             {
                 return new ErrorResult(Messages.ProductNameInvalid);
                

@@ -50,7 +50,8 @@ namespace DataAccess.Concrete.InMemory
 
         public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
         {
-            return null;
+            throw new NotImplementedException();
+            //return null;
         }
 
         public void Update(Product entity)

@@ -14,15 +14,68 @@ namespace ConsoleUI
     class Program
     {
         public static IProductService _productService = new ProductManager(new EfProductDal());
-        static void Main(string[] args)
-        {
+       
 
-            Add();
-            GetBrandId();
-            GetColorId();
-            GetAll();
+        static void Main(string[] args)
+        {//-----1------
+            //Add();
+            //GetBrandId();
+            //GetColorId();
+            //GetAll();
+         //------2------
+            // UserCrudOperations();
+            //CustomerCrudOperation();
+            //RentalCrudOperation();
 
         }
+
+        private static void RentalCrudOperation()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            rentalManager.Add(new Rental { CustomerId = 1, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
+            rentalManager.Add(new Rental { CustomerId = 3, RentDate = DateTime.Now });
+            rentalManager.Add(new Rental { CustomerId = 1, RentDate = DateTime.Now });
+            rentalManager.Add(new Rental { CustomerId = 3, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
+            // bu eklenmemeli
+            rentalManager.Add(new Rental { ProductId = 21, CustomerId = 5, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
+
+            rentalManager.Add(new Rental { ProductId = 2, CustomerId = 1, RentDate = DateTime.Now });
+
+            var rent = rentalManager.GetById(13).Data;
+            rent.ReturnDate = DateTime.Now.AddDays(1);
+            rentalManager.Update(rent);
+
+            rentalManager.Add(new Rental { ProductId = 2, CustomerId = 3, RentDate = DateTime.Now.AddDays(5), ReturnDate = DateTime.Now.AddDays(15) });
+            foreach (var item in rentalManager.GetAllWithDetails().Data)
+            {
+                Console.WriteLine($" {item.ProductName} {item.UserName} {item.BrandName} ");
+            }
+        }
+
+        private static void CustomerCrudOperation()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            customerManager.Add(new Customer { UserId = 4, CompanyName = "TEST SIRKETI" });
+            customerManager.Add(new Customer { UserId = 5, CompanyName = "TEST SIRKETI" });
+            customerManager.Add(new Customer { UserId = 5, CompanyName = "TEST2 SIRKETI" });
+            customerManager.Delete(new Customer { Id = 5 });
+            var customer = customerManager.GetById(4).Data;
+            customer.CompanyName = "Kimyass";
+            customerManager.Update(customer);
+            customerManager.Add(new Customer { UserId = 6, CompanyName = "TEST2 SIRKETI" });
+        }
+
+        private static void UserCrudOperations()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            userManager.Add(new User { FirstName = "Canan", LastName = "Soba", Email = "canansoba@gmail.com", Password = "123" });
+            //userManager.Delete(new User { Id=2});
+            var user = userManager.GetById(3).Data;
+            user.Email = "esra@yahoo.com";
+            userManager.Update(user);
+        }
+
+       
 
         private static void GetAll()
         {
@@ -31,6 +84,15 @@ namespace ConsoleUI
                 Console.WriteLine($"Id {product.Id}, Description : {product.Description}");
             }
         }
+        private static void Delete()
+        {
+            _productService.Delete(new Product { Id=1, BrandId = 1, ColorId = 1, DailyPrice = 50000, Description = "mercedes e200", ModelYear = 2005 });
+            foreach (var car in _productService.GetAll().Data)
+            {
+                Console.WriteLine("ıd : " + car.Id + " marka ıd : " + car.BrandId + " renk ıd : " + car.ColorId + " fiyat : " + car.DailyPrice + " araba : " + car.Description + " model yili :  " + car.ModelYear);
+            }
+        }
+        
 
         private static void GetColorId()
         {

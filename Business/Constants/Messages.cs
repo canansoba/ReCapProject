@@ -12,5 +12,10 @@ namespace Business.Constants
         public static string ProductControl = "Açıklama ve günlük fiyat girişini kontrol ediniz.";
         public static string ProductUpdates = "Ürün güncellendi.";
         public static string ProductListed = "Ürünler listelendi.";
+        public static string CarRented = "Araba Kiralandı";
+        public static string CarNotRented = "Araba kiralanamamıştır.";
+        public static string CustomerAddes = "Müşteri eklendi.";
+        public static string CustomerDeleted = "Müşteri silindi.";
+        public static string CustomerUpdates = "Müşteri güncellendi.";
     }
 }
