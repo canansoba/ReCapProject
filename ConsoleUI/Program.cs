@@ -25,30 +25,31 @@ namespace ConsoleUI
          //------2------
             // UserCrudOperations();
             //CustomerCrudOperation();
-            //RentalCrudOperation();
+            RentalCrudOperation();
 
         }
 
         private static void RentalCrudOperation()
         {
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
-            rentalManager.Add(new Rental { CustomerId = 1, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
-            rentalManager.Add(new Rental { CustomerId = 3, RentDate = DateTime.Now });
-            rentalManager.Add(new Rental { CustomerId = 1, RentDate = DateTime.Now });
-            rentalManager.Add(new Rental { CustomerId = 3, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
+           // rentalManager.Add(new Rental { CustomerId = 3, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
+            //rentalManager.Add(new Rental { CustomerId = 4, RentDate = DateTime.Now });
+           // rentalManager.Add(new Rental { CustomerId = 6, RentDate = DateTime.Now });
+           // rentalManager.Add(new Rental { CustomerId = 6, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
             // bu eklenmemeli
-            rentalManager.Add(new Rental { ProductId = 21, CustomerId = 5, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
+            rentalManager.Add(new Rental { ProductId = 10, CustomerId = 6, RentDate = DateTime.Now, ReturnDate = DateTime.Now.AddDays(2) });
 
-            rentalManager.Add(new Rental { ProductId = 2, CustomerId = 1, RentDate = DateTime.Now });
+            //rentalManager.Add(new Rental { ProductId = 11, CustomerId = 1, RentDate = DateTime.Now });
 
-            var rent = rentalManager.GetById(13).Data;
+            var rent = rentalManager.GetById(2).Data;
             rent.ReturnDate = DateTime.Now.AddDays(1);
             rentalManager.Update(rent);
 
-            rentalManager.Add(new Rental { ProductId = 2, CustomerId = 3, RentDate = DateTime.Now.AddDays(5), ReturnDate = DateTime.Now.AddDays(15) });
+            rentalManager.Add(new Rental { ProductId = 6, CustomerId = 4, RentDate = DateTime.Now.AddDays(5), ReturnDate = DateTime.Now.AddDays(15) });
             foreach (var item in rentalManager.GetAllWithDetails().Data)
             {
-                Console.WriteLine($" {item.ProductName} {item.UserName} {item.BrandName} ");
+                Console.WriteLine($" {"Ürün: "+item.ProductName} {"Kullanıcı: "+item.UserName} {"Marka: "+item.BrandName} " +
+                    $"{"Gidiş Tarihi: "+item.RentDate} {"Dönüş Tarihi: "+item.ReturnDate} ");
             }
         }
 

@@ -38,7 +38,7 @@ namespace DataAccess.Concrete.EntityFrameWork
                 return result.ToList();
                 
             }
-            return new List<RentalDetailDto>();
+           // return new List<RentalDetailDto>();
         }
     }
 }
