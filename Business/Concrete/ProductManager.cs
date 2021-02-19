@@ -9,6 +9,10 @@ using Entities.DTO;
 using System.Linq.Expressions;
 using Core.Utilities.Results;
 using Business.Constants;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -19,15 +23,10 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product car)
         {
-            if (car.Description.Length < 2 && car.DailyPrice <= 0)
-            {
-                return new ErrorResult(Messages.ProductNameInvalid);
-               
-            }
-            else
-                _productDal.Add(car);
+            _productDal.Add(car);
 
             return new SuccessResult(Messages.ProductAddes);
         }
