@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\Cons
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{1E626BAE-EE03-45BA-BFB1-7BAE79566E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{5907CD4C-B470-402D-B6AC-F383BA32D28F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{5907CD4C-B470-402D-B6AC-F383BA32D28F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{38BF123D-22A1-4640-B1AF-BFF31E034D38}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\Canan\Desktop\mercedes.jpg = C:\Users\Canan\Desktop\mercedes.jpg
+		C:\Users\Canan\Desktop\subaru.jpg = C:\Users\Canan\Desktop\subaru.jpg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
