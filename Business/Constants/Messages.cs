@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -21,5 +22,12 @@ namespace Business.Constants
         internal static string MaxCarImage="Arabanın en fazla 5 resmi olabilir.";
         internal static string ImagesAdded="Resim eklendi";
         internal static string CarImagesListed="Resimler listelendi";
+        internal static string AuthorizationDenied="Yetkiniz yok.";
+        public static string UserRegistered = "Kullanıcı kayıt oldu";
+        public static string UserNotFound = "Kullanıcı bulunamadı";
+        public static string PasswordError = "Parola bulunamadı";
+        public static string SuccessfulLogin = "Başarılı giriş";
+        public static string UserAlreadyExists = "Kullanıcı mevcut";
+        public static string AccessTokenCreated = "Token oluşturuldu";
     }
 }

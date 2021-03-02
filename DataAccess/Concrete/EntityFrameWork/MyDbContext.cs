@@ -5,7 +5,7 @@ using System.Text;
 using Entities.Concrete;
 using System.Linq;
 using System.Linq.Expressions;
-
+using Core.Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFrameWork
 {
@@ -21,8 +21,11 @@ namespace DataAccess.Concrete.EntityFrameWork
         public DbSet<Brand> Brand { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Rental> Rentals { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+
         // public DbSet<Order> Order { get; set; }
     }
 }
