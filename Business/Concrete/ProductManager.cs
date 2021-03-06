@@ -14,6 +14,9 @@ using Business.ValidationRules.FluentValidation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Aspects.Autofac.Validation;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
+using Core.Aspects.Autofac.Performance;
 
 namespace Business.Concrete
 {
@@ -24,13 +27,19 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-        [SecuredOperation("admin,editor")]
+        [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product car)
         {
             _productDal.Add(car);
 
             return new SuccessResult(Messages.ProductAddes);
+        }
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+            throw new NotImplementedException();
         }
 
         public IResult Delete(Product car)
@@ -38,7 +47,7 @@ namespace Business.Concrete
             _productDal.Delete(car);
             return new ErrorResult(Messages.ProductDeleted);
         }
-
+        [CacheAspect] //key, value
         public IDataResult<List<Product>> GetAll()
         {
             
@@ -54,7 +63,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetCarDetailDtos(p => p.ColorId == colorId));
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<Product> GetProductById(int id)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.Id == id));
@@ -64,7 +74,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetCarDetailDtos());
         }
-
+        [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product car)
         {
             if (!(car.Description.Length < 2 && car.DailyPrice <= 0))
@@ -77,15 +88,5 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductUpdates);
 
         }
-
-        //List<ProductDetailDto> IProductService.GetProductByBrandId(int brandId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //List<ProductDetailDto> IProductService.GetProductByColorId(int colorId)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
